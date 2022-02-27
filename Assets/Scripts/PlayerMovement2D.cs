@@ -8,53 +8,113 @@ public class PlayerMovement2D : MonoBehaviour
 
     // system
     Vector2 movement;
-    bool isFacingRight = true;
+    Vector2 lastMovement;
+    bool isMoving = false;
 
+    // interactables
+    public Object[] objects;
 
     // references
     [SerializeField] Joystick joystick;
-    [SerializeField] Rigidbody2D rb;
-    [SerializeField] Animator animator;
+    Rigidbody2D rb;
+    Animator animator;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
+    {
+        objects = GameObject.FindObjectsOfType(typeof(Interactable));
+
+        // Inputs and Movements
+        MyInput();
+        Move();
+
+        // Interactables
+        CheckInteractables();
+
+        // Animation
+        Animate();
+    }
+
+    private void MyInput()
     {
         movement.x = joystick.Horizontal;
         movement.y = joystick.Vertical;
 
-        // joystick deadzone
-        if (movement.x > 0.02f || movement.y > 0.02f)
+        movement.Normalize();
+
+        // checks if the player is moving
+        if (movement.magnitude > 0f)
         {
-            // if moving left
-            if (movement.x < 0 && isFacingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-                isFacingRight = false;
-            }
+            // this function remembers the last direction the player was facing
+            lastMovement = movement;
+            isMoving = true;
+        }
+        else
+            isMoving = false;
 
-
-            // if moving right
-            if (movement.x > 0 && !isFacingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-                isFacingRight = true;
-            }
-
-            movement.Normalize();
-
-            // Animation
-            if (movement.magnitude > 0)
-            {
-                animator.SetBool("Is Moving", true);
-            }
-            else
-            {
-                animator.SetBool("Is Moving", false);
-            }
+        // Refers to the direction of the player
+        if (movement.x > 0)
+        {
+            transform.localScale = new Vector2(-1, 1);
+        }
+        else if (movement.x < 0)
+        {
+            transform.localScale = Vector2.one;
         }
     }
 
-    private void FixedUpdate()
+    private void Move()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        if (rb)
+        {
+            rb.velocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
+        }
+    }
+
+    private void Animate()
+    {
+        if (animator)
+        {
+            animator.SetBool("IsMoving", isMoving);
+            animator.SetFloat("xInput", Mathf.Abs(lastMovement.x));
+            animator.SetFloat("yInput", lastMovement.y);
+        }
+    }
+
+    public void OnMainButtonTouch()
+    {
+        // check if on interactable
+        for (int i = 0; i < objects.Length; i++)
+        {
+            Interactable interactable = (Interactable)objects[i];
+            if (interactable != null && ((transform.position - interactable.transform.position).magnitude < interactable.radius))
+            {
+                interactable.Interact();
+                break; // we break to avoid picking up multiple items
+            }
+        }
+
+        // if not we attack
+    }
+
+    void CheckInteractables()
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            Interactable interactable = (Interactable)objects[i];
+            if (interactable != null && ((transform.position - interactable.transform.position).magnitude < interactable.radius))
+            {
+                interactable.EnableInteractableIcon();
+            }
+            else
+            {
+                interactable.DisableInteractableIcon();
+            }
+        }
     }
 }

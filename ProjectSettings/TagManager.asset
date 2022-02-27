@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - Blocking
+  - Interactable
   - 
   - 
   - 
@@ -41,6 +41,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
+  - name: Void
+    uniqueID: 1081259935
+    locked: 0
+  - name: Floor
+    uniqueID: 1103683659
+    locked: 0
+  - name: Other
     uniqueID: 3022268829
+    locked: 0
+  - name: Player
+    uniqueID: 717572331
+    locked: 0
+  - name: Collision
+    uniqueID: 3937282211
     locked: 0
