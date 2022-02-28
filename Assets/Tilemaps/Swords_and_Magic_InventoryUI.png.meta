@@ -4,19 +4,19 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5374902938155782620
-    second: Panel_001
+    second: Slot_001
   - first:
       213: 5337906536938528304
-    second: Panel_002
+    second: Slot_002
   - first:
       213: 6499376820997146473
-    second: UI_Base
+    second: Panel_001
   - first:
       213: 326924513351731570
-    second: UI_InteractionIcon
+    second: Arrow_001
   - first:
       213: -6401472780183393654
-    second: UI_CloseButton
+    second: CloseButton_001
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -130,7 +130,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Panel_001
+      name: Slot_001
       rect:
         serializedVersion: 2
         x: 0
@@ -139,7 +139,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 2, y: 2, z: 2, w: 2}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -151,7 +151,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Panel_002
+      name: Slot_002
       rect:
         serializedVersion: 2
         x: 16
@@ -160,7 +160,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 2, y: 2, z: 2, w: 2}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -172,7 +172,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Base
+      name: Panel_001
       rect:
         serializedVersion: 2
         x: 32
@@ -181,7 +181,7 @@ TextureImporter:
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 6, y: 6, z: 6, w: 6}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -193,7 +193,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_InteractionIcon
+      name: Arrow_001
       rect:
         serializedVersion: 2
         x: 0
@@ -214,7 +214,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_CloseButton
+      name: CloseButton_001
       rect:
         serializedVersion: 2
         x: 16

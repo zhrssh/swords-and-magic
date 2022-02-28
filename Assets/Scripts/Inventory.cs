@@ -26,9 +26,11 @@ public class Inventory : MonoBehaviour
     {
         if (!item.isDefaultItem)
         {
-            if (items.Count < inventorySpace)
+            // checks if there is still space in the inventory
+            // and is a new item
+            if (items.Count < inventorySpace) 
             {
-                items.Add(item);
+                items.Add(Instantiate(item));
 
                 // Used to update ui
                 if (onItemChangedCallback != null)
@@ -49,5 +51,9 @@ public class Inventory : MonoBehaviour
     public void Remove(Item item)
     {
         items.Remove(item);
+
+        // Used to update ui
+        if (onItemChangedCallback != null)
+            onItemChangedCallback.Invoke();
     }
 }

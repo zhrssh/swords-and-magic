@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
@@ -6,6 +7,10 @@ public class Item : ScriptableObject
     new public string name = "New Item";
     public Sprite icon = null;
     public bool isDefaultItem = false;
-    public bool isStackable = false;
-    public int stackLimit = 4;
+
+    public virtual void Use()
+    {
+        // method meant to be overwritten
+        Debug.Log("Using " + name);
+    }
 }
