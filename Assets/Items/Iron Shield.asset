@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Iron Shield
   m_EditorClassIdentifier: 
   name: Iron Shield
+  description: This is an iron shield made by Zherish.
   icon: {fileID: 7299346231314950611, guid: 3d3124bc78cb8e348a20bde5dfb7fdab, type: 3}
   isDefaultItem: 0
-  isStackable: 0
-  stackLimit: 1

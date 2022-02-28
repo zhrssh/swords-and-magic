@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -11,9 +11,20 @@ public class InventoryUI : MonoBehaviour
 
     public GameObject inventoryObject;
 
+    public delegate void OnSelectionChange();
+    public OnSelectionChange onSelectionChangeCallback;
+
+    // item description
+    public Image icon;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI description;
+
     private void Start()
     {
-        // temporary
+        icon.enabled = false;
+        title.enabled = false;
+        description.enabled = false;
+
         inventoryObject.SetActive(false);
 
         inventory = Inventory.instance;
@@ -31,7 +42,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         for (int i = 0; i < slots.Length; i++) // loops through all the slots
         {
@@ -43,6 +54,26 @@ public class InventoryUI : MonoBehaviour
             {
                 slots[i].ClearSlot();
             }
+        }
+    }
+
+    public void UpdateDisplayItem(Item item)
+    {
+        if (item != null)
+        {
+            icon.enabled = true;
+            title.enabled = true;
+            description.enabled = true;
+
+            icon.sprite = item.icon;
+            title.text = item.name;
+            description.text = item.description;
+        }
+        else
+        {
+            icon.enabled = false;
+            title.enabled = false;
+            description.enabled = false;
         }
     }
 }

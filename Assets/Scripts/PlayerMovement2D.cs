@@ -32,9 +32,6 @@ public class PlayerMovement2D : MonoBehaviour
         MyInput();
         Move();
 
-        // Interactables
-        CheckInteractables();
-
         // Animation
         Animate();
     }
@@ -99,21 +96,5 @@ public class PlayerMovement2D : MonoBehaviour
         }
 
         // if not we attack
-    }
-
-    void CheckInteractables()
-    {
-        for (int i = 0; i < objects.Length; i++)
-        {
-            Interactable interactable = (Interactable)objects[i];
-            if (interactable != null && ((transform.position - interactable.transform.position).magnitude < interactable.radius))
-            {
-                interactable.EnableInteractableIcon();
-            }
-            else
-            {
-                interactable.DisableInteractableIcon();
-            }
-        }
     }
 }

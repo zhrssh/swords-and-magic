@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e77bdec7c5e1ba4fa7fd4af86314357, type: 3}
-  m_Name: Iron Sword
+  m_Name: Red Potion
   m_EditorClassIdentifier: 
-  name: Iron Sword
-  description: This is an iron sword. It is sharp.
-  icon: {fileID: 3991805366557644944, guid: 3d3124bc78cb8e348a20bde5dfb7fdab, type: 3}
+  name: Red Potion
+  description: This potion heals you.
+  icon: {fileID: -3423794386144409037, guid: 3d3124bc78cb8e348a20bde5dfb7fdab, type: 3}
   isDefaultItem: 0

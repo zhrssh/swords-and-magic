@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
@@ -11,15 +10,20 @@ public class InventorySlot : MonoBehaviour
     
     Item item;
 
+    InventoryUI inventoryUI;
+
     private void Start()
     {
-        useButton.gameObject.SetActive(false);
-        dropButton.gameObject.SetActive(false);
-        closeButton.gameObject.SetActive(false);
+        inventoryUI = FindObjectOfType<InventoryUI>();
+        if (inventoryUI != null)
+            inventoryUI.onSelectionChangeCallback += DisableOptions;
+
+        DisableOptions();
     }
 
     public void AddItem(Item newItem)
     {
+        // Uses the data from the item and displays it in the game
         item = newItem;
         icon.sprite = item.icon;
         icon.enabled = true;
@@ -41,6 +45,18 @@ public class InventorySlot : MonoBehaviour
             // we show the options to use and drop the item
             EnableOptions();
         }
+
+        // this function is to be able to open the options on one slot
+        if (inventoryUI.onSelectionChangeCallback != null)
+        {
+            // we temporarily remove this function then call the disable options
+            inventoryUI.onSelectionChangeCallback -= DisableOptions; 
+            inventoryUI.onSelectionChangeCallback.Invoke();
+            inventoryUI.onSelectionChangeCallback += DisableOptions;
+        }
+
+        // we show the item description, icon and name in the display
+        inventoryUI.UpdateDisplayItem(item);
     }
 
     public void OnCloseButtonClicked()
@@ -61,6 +77,9 @@ public class InventorySlot : MonoBehaviour
 
             // after removing the item we close the options
             DisableOptions();
+
+            // We update the display
+            inventoryUI.UpdateDisplayItem(item);
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     new public string name = "New Item";
+    public string description = "This is the item description.";
     public Sprite icon = null;
     public bool isDefaultItem = false;
 
