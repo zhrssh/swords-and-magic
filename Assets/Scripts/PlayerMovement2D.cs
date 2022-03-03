@@ -4,22 +4,31 @@ using UnityEngine.EventSystems;
 public class PlayerMovement2D : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float range = 0.1f;
+    public Vector3 handOffset = Vector3.zero;
 
     // system
     Vector2 movement;
     Vector2 lastMovement;
+
     bool isMoving = false;
+    bool isAiming = false;
+
+    Vector2 aim;
 
     // interactables
     public Object[] objects;
 
     // references
-    [SerializeField] Joystick joystick;
+    [SerializeField] Joystick moveJoystick;
+    [SerializeField] Joystick aimJoystick;
+    [SerializeField] GameObject hand;
     Rigidbody2D rb;
     Animator animator;
 
     private void Start()
     {
+        hand.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -30,6 +39,7 @@ public class PlayerMovement2D : MonoBehaviour
 
         // Inputs and Movements
         MyInput();
+        MyAim();
         Move();
 
         // Animation
@@ -38,8 +48,9 @@ public class PlayerMovement2D : MonoBehaviour
 
     private void MyInput()
     {
-        movement.x = joystick.Horizontal;
-        movement.y = joystick.Vertical;
+        // Movement
+        movement.x = moveJoystick.Horizontal;
+        movement.y = moveJoystick.Vertical;
 
         movement.Normalize();
 
@@ -52,15 +63,26 @@ public class PlayerMovement2D : MonoBehaviour
         }
         else
             isMoving = false;
+    }
 
-        // Refers to the direction of the player
-        if (movement.x > 0)
+    private void MyAim()
+    {
+        // Aiming System
+        aim.x = aimJoystick.Horizontal;
+        aim.y = aimJoystick.Vertical;
+
+        Vector3 direction = new Vector3(aim.x * range, aim.y * range);
+        hand.transform.localPosition = handOffset + direction;
+
+        if (aim.magnitude > 0f)
         {
-            transform.localScale = new Vector2(-1, 1);
+            isAiming = true;
+            hand.SetActive(true);
         }
-        else if (movement.x < 0)
+        else
         {
-            transform.localScale = Vector2.one;
+            isAiming = false;
+            hand.SetActive(false);
         }
     }
 
@@ -77,8 +99,9 @@ public class PlayerMovement2D : MonoBehaviour
         if (animator)
         {
             animator.SetBool("IsMoving", isMoving);
-            animator.SetFloat("xInput", Mathf.Abs(lastMovement.x));
-            animator.SetFloat("yInput", lastMovement.y);
+
+            animator.SetFloat("xInput", (isAiming) ? aim.x : lastMovement.x);
+            animator.SetFloat("yInput", (isAiming) ? aim.y : lastMovement.y);
         }
     }
 
@@ -96,5 +119,10 @@ public class PlayerMovement2D : MonoBehaviour
         }
 
         // if not we attack
+    }
+
+    public bool IsAiming()
+    {
+        return isAiming;
     }
 }
