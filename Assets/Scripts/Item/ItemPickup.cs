@@ -7,6 +7,12 @@ public class ItemPickup : Interactable
     // References
     public Item item;
 
+    protected override void Start()
+    {
+        base.Start();
+        boxCollider.isTrigger = true;
+    }
+
     public override void Interact()
     {
         base.Interact();

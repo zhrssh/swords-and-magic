@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Red Potion
   description: This potion heals you.
+  inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
   sprite: {fileID: -3423794386144409037, guid: 3d3124bc78cb8e348a20bde5dfb7fdab, type: 3}
   isDefaultItem: 0

@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Iron Shield
   description: This is your starter shield.
-  sprite: {fileID: 7299346231314950611, guid: 3d3124bc78cb8e348a20bde5dfb7fdab, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
+  sprite: {fileID: -5388254702258332691, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
   isDefaultItem: 0
   equipmentSlot: 0
-  damageModifier: 1
+  baseDamage: 1
   damagePercentReduction: 10
+  pushForce: 2
+  attackCooldown: 2

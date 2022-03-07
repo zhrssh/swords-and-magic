@@ -33,15 +33,6 @@ public class InventoryUI : MonoBehaviour
         slots = itemsParent.GetComponentsInChildren<InventorySlot>(); // gets reference to all the inventory slots
     }
 
-    private void Update()
-    {
-        // enables and disables inventory ui. this is temporary
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            inventoryObject.SetActive(!inventoryObject.activeSelf);
-        }
-    }
-
     private void UpdateUI()
     {
         for (int i = 0; i < slots.Length; i++) // loops through all the slots
@@ -65,7 +56,7 @@ public class InventoryUI : MonoBehaviour
             title.enabled = true;
             description.enabled = true;
 
-            icon.sprite = item.sprite;
+            icon.sprite = item.inventoryIcon;
             title.text = item.name;
             description.text = item.description;
         }

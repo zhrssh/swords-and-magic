@@ -25,7 +25,7 @@ public class InventorySlot : MonoBehaviour
     {
         // Uses the data from the item and displays it in the game
         item = newItem;
-        icon.sprite = item.sprite;
+        icon.sprite = item.inventoryIcon;
         icon.enabled = true;
     }
 

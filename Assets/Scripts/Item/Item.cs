@@ -6,6 +6,7 @@ public class Item : ScriptableObject
 {
     new public string name = "New Item";
     public string description = "This is the item description.";
+    public Sprite inventoryIcon = null;
     public Sprite sprite = null;
     public bool isDefaultItem = false;
 

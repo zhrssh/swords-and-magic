@@ -16,7 +16,7 @@ public class EquipmentManager : MonoBehaviour
     public delegate void OnEquipmentChange(Equipment newItem, Equipment oldItem);
     public OnEquipmentChange onEquipmentChange;
 
-    Equipment[] currentEquipment;
+    public Equipment[] currentEquipment;
     Inventory inventory;
 
     private void Start()
@@ -55,9 +55,6 @@ public class EquipmentManager : MonoBehaviour
         // after adding it back to the inventory, we swap it to the new item
         currentEquipment[slotIndex] = newItem;
 
-        // Render weapon
-        UpdateRenderEquipment(slotIndex);
-
         return true;
     }
 
@@ -79,9 +76,6 @@ public class EquipmentManager : MonoBehaviour
             }
 
             currentEquipment[slotIndex] = null;
-
-            // Render weapon
-            UpdateRenderEquipment(slotIndex);
         }
     }
 
@@ -98,18 +92,6 @@ public class EquipmentManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U))
         {
             UnEquipAll();
-        }
-    }
-
-    private void UpdateRenderEquipment(int slotIndex)
-    {
-        if (currentEquipment[slotIndex] != null)
-        {
-            // Render equipment
-        }
-        else
-        {
-            // We unRender equipment
         }
     }
 }

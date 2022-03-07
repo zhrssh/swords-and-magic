@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public class Interactable : Collidable
 {
-    public float radius = 0.15f;
-
     public virtual void Interact()
     {
         // this method is meant to be overridden

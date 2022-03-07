@@ -7,8 +7,10 @@ public class Equipment : Item
 {
     public EquipmentSlot equipmentSlot;
 
-    public float damageModifier;
+    public float baseDamage;
     public float damagePercentReduction;
+    public float pushForce;
+    public float attackCooldown;
 
     public override void Use()
     {
