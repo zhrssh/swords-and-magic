@@ -4,10 +4,13 @@ using UnityEngine;
 public class PlayerWeapon : Collidable
 {
     // Damage Struct
-    public float baseDamage = 1;
-    public float damagePercentReduction = 0;
-    public float pushForce = 0.3f;
-    public float attackCooldown= 1;
+    [SerializeField] float baseDamage = 1;
+    [SerializeField] float damagePercentReduction = 0;
+    [SerializeField] float pushForce = 0.3f;
+    public float attackCooldown = 1;
+
+    // Attack Animation
+    public Animation attackAnim;
 
     // Equipment Manager
     EquipmentManager equipmentManager;
@@ -29,6 +32,7 @@ public class PlayerWeapon : Collidable
     {
         base.Update();
 
+        // Updates the weapon based on the equipped weapon
         for (int i = 0; i < equipmentManager.currentEquipment.Length; i++)
         {
             if (equipmentManager.currentEquipment[i] != null)
@@ -53,6 +57,7 @@ public class PlayerWeapon : Collidable
             attackCooldown = item.attackCooldown;
 
             spriteRenderer.sprite = item.sprite;
+            attackAnim = item.attackAnim;
         }
         else
         {
@@ -63,16 +68,23 @@ public class PlayerWeapon : Collidable
             attackCooldown = 1;
 
             spriteRenderer.sprite = null;
+            attackAnim = null;
         }
     }
 
     protected override void OnCollide(Collider2D collider2D)
     {
-        base.OnCollide(collider2D);
-        if (collider2D.tag == "Player")
+        if (collider2D.name == "Player") // temporary condition
             return; // we ignore player
 
         // Do damage
-        Debug.Log("Damaging " + collider2D.name);
+        Damage dmg = new Damage
+        {
+            origin = transform.position,
+            damage = baseDamage,
+            pushForce = this.pushForce
+        };
+
+        collider2D.SendMessage("TakeDamage", dmg);
     }
 }

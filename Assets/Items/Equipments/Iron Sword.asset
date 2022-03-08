@@ -18,7 +18,8 @@ MonoBehaviour:
   sprite: {fileID: -1468138165416736685, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
   isDefaultItem: 0
   equipmentSlot: 0
-  baseDamage: 0
+  baseDamage: 5
   damagePercentReduction: 0
-  pushForce: 0
-  attackCooldown: 0
+  pushForce: 1
+  attackCooldown: 1.5
+  attackAnim: {fileID: 0}

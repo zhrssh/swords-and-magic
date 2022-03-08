@@ -12,6 +12,8 @@ public class Equipment : Item
     public float pushForce;
     public float attackCooldown;
 
+    public Animation attackAnim;
+
     public override void Use()
     {
         base.Use();
