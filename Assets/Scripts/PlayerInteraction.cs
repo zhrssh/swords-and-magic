@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,22 +9,61 @@ public class PlayerInteraction : MonoBehaviour
 
     // Equipment
     PlayerWeapon weapon;
+    EquipmentManager equipmentManager;
+
+    // Animation
+    const string TRIGGER_ATTACK = "Attack";
+    Animator animator;
+    AnimatorOverrideController overrideController;
+
+    // Animation Clips
+    [SerializeField] AnimationClip defaultAttack;
+    [SerializeField] AnimationClip meleeAttack;
+    [SerializeField] AnimationClip staffAttack;
 
     // Combat
     private float lastAttack;
-    private bool isAttacking;
-
-    // Animation of attack varies within the weapon
 
     private void Start()
     {
         weapon = GetComponentInChildren<PlayerWeapon>();
+        equipmentManager = EquipmentManager.instance;
+        animator = GetComponent<Animator>();
+
+        overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = overrideController;
     }
 
     private void Update()
     {
-        // Combat
-        HandleAttack();
+        // Check Current Weapon
+        Equipment equipment = CheckCurrentWeapon();
+
+        if (equipment != null)
+        {
+            switch (equipment.equipmentType)
+            {
+                case EquipmentType.Melee:
+                    SetAnimation(meleeAttack);
+                    break;
+                case EquipmentType.Staff:
+                    SetAnimation(staffAttack);
+                    break;
+                default:
+                    SetAnimation(defaultAttack);
+                    break;
+            }
+        }
+    }
+
+    private void SetAnimation(AnimationClip anim)
+    {
+        overrideController["Default Attack"] = anim;
+    }
+
+    private Equipment CheckCurrentWeapon()
+    {
+        return equipmentManager.currentEquipment[0];
     }
 
     public void OnMainButtonTouch()
@@ -46,31 +86,27 @@ public class PlayerInteraction : MonoBehaviour
         // if not we attack
         else
         {
-            isAttacking = true;
-        }
-    }
-
-    private void HandleAttack()
-    {
-        if (isAttacking)
-        {
             if (Time.time - lastAttack > weapon.attackCooldown)
             {
                 lastAttack = Time.time;
-                Swing();
+                Attack();
             }
         }
     }
 
-    private void Swing()
+    private void Attack()
     {
-        Debug.Log("HIYAHHH! Swing not implemented yet");
+        // Play Animation
+        animator.SetTrigger(TRIGGER_ATTACK);
+    }
 
-        // Swing using the weapon's animation
-        if(weapon.attackAnim != null)
-            weapon.attackAnim.Play();
+    public void AnimationEnter()
+    {
+        weapon.canDamage = true;
+    }
 
-        // After the animation, we can swing
-        isAttacking = false;
+    public void AnimationEnded()
+    {
+        weapon.canDamage = false;
     }
 }

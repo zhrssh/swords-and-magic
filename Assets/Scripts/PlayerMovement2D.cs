@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement2D : MonoBehaviour
@@ -29,7 +30,18 @@ public class PlayerMovement2D : MonoBehaviour
         Move();
 
         // Animation
-        Animate();
+        AnimateMovement();
+    }
+
+    private void AnimateMovement()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsMoving", isMoving);
+
+            animator.SetFloat("xInput", lastMovement.x);
+            animator.SetFloat("yInput", lastMovement.y);
+        }
     }
 
     private void MyInput()
@@ -56,17 +68,6 @@ public class PlayerMovement2D : MonoBehaviour
         if (rb)
         {
             rb.velocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
-        }
-    }
-
-    private void Animate()
-    {
-        if (animator)
-        {
-            animator.SetBool("IsMoving", isMoving);
-
-            animator.SetFloat("xInput", lastMovement.x);
-            animator.SetFloat("yInput", lastMovement.y);
         }
     }
 }

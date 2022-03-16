@@ -5,14 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item
 {
+    public EquipmentType equipmentType;
     public EquipmentSlot equipmentSlot;
 
     public float baseDamage;
-    public float damagePercentReduction;
     public float pushForce;
     public float attackCooldown;
-
-    public Animation attackAnim;
 
     public override void Use()
     {
@@ -26,4 +24,12 @@ public class Equipment : Item
 public enum EquipmentSlot
 {
     Weapon
+}
+
+public enum EquipmentType
+{
+    Melee,
+    Staff, 
+    Bow,
+    Fist
 }

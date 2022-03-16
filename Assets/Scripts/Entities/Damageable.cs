@@ -5,9 +5,9 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     // Systems
-    [SerializeField] private float maxHealth = 100.0f;
-    [SerializeField] private float maxArmor = 100.0f;
-    [SerializeField] private float pushRecoverySpeed = 0.2f;
+    [SerializeField] protected float maxHealth = 100.0f;
+    [SerializeField] protected float maxArmor = 100.0f;
+    [SerializeField] protected float pushRecoverySpeed = 0.2f;
 
     // private fields
     private float health;
@@ -21,23 +21,17 @@ public class Damageable : MonoBehaviour
     protected Vector3 pushDirection;
 
     // References
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
     private bool isDead = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
 
         health = maxHealth;
         armor = maxArmor;
-    }
-
-    private void Update()
-    {
-        // Clamping
-        health = Mathf.Clamp(health, 0.0f, maxHealth);
-        armor = Mathf.Clamp(armor, 0.0f, maxArmor);
     }
 
     public bool IsDead()
@@ -58,21 +52,33 @@ public class Damageable : MonoBehaviour
                 if (armor > 0f)
                 {
                     armor -= dmg.damage;
+                    armor = Mathf.Clamp(armor, 0.0f, maxArmor);
                 }
                 else if (armor <= 0f)
                 {
                     health -= dmg.damage;
+                    health = Mathf.Clamp(health, 0.0f, maxHealth);
                 }
 
                 // Push Force
-                pushDirection = (transform.position - dmg.origin).normalized * dmg.pushForce;
-
-                if (health < 0f)
-                {
-                    isDead = true;
-                    HandleDeath();
-                }
+                pushDirection = (transform.position - dmg.origin).normalized * dmg.pushForce * 100f;
             }
+        }
+
+        if (health <= 0f)
+        {
+            isDead = true;
+            HandleDeath();
+        }
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        // Handles push direction
+        if (pushDirection.magnitude > 0)
+        {
+            rb.AddForce(pushDirection, ForceMode2D.Impulse);
+            pushDirection = Vector2.zero;
         }
     }
 
@@ -81,6 +87,7 @@ public class Damageable : MonoBehaviour
         if (!isDead)
         {
             health += healReceived;
+            health = Mathf.Clamp(health, 0.0f, maxHealth);
         }
     }
 
@@ -89,14 +96,16 @@ public class Damageable : MonoBehaviour
         if (!isDead)
         {
             armor += armorReceived;
+            armor = Mathf.Clamp(armor, 0.0f, maxArmor);
         }
     }
 
     protected virtual void HandleDeath()
     {
-        if (!isDead)
+        if (isDead)
         {
             Debug.Log("DEATH!");
+            Destroy(gameObject);
         }
     }
 }

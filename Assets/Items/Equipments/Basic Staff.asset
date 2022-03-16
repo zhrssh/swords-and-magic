@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91117a9f3de4d714b92c6f9075adf571, type: 3}
-  m_Name: Iron Shield
+  m_Name: Basic Staff
   m_EditorClassIdentifier: 
-  name: Iron Shield
-  description: This is your starter shield.
+  name: Basic Staff
+  description: This is a staff for wizards.
   inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
-  sprite: {fileID: -5388254702258332691, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
+  sprite: {fileID: 2563476779078240122, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
   isDefaultItem: 0
+  equipmentType: 1
   equipmentSlot: 0
-  baseDamage: 1
-  damagePercentReduction: 10
-  pushForce: 2
-  attackCooldown: 2
+  baseDamage: 75
+  pushForce: 1
+  attackCooldown: 3

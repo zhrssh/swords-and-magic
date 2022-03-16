@@ -5,12 +5,9 @@ public class PlayerWeapon : Collidable
 {
     // Damage Struct
     [SerializeField] float baseDamage = 1;
-    [SerializeField] float damagePercentReduction = 0;
     [SerializeField] float pushForce = 0.3f;
     public float attackCooldown = 1;
-
-    // Attack Animation
-    public Animation attackAnim;
+    public bool canDamage = false;
 
     // Equipment Manager
     EquipmentManager equipmentManager;
@@ -18,14 +15,20 @@ public class PlayerWeapon : Collidable
     // References
     SpriteRenderer spriteRenderer;
 
+    // Default Weapon and Animation
+    [SerializeField] private Sprite fist;
+
     protected override void Start()
     {
         base.Start();
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider.isTrigger = true;
         boxCollider.autoTiling = true;
 
         equipmentManager = EquipmentManager.instance;
+
+        UpdateWeaponProperties(null);
     }
 
     protected override void Update()
@@ -37,54 +40,57 @@ public class PlayerWeapon : Collidable
         {
             if (equipmentManager.currentEquipment[i] != null)
             {
-                UpdateWeapon(equipmentManager.currentEquipment[i]);
+                UpdateWeaponProperties(equipmentManager.currentEquipment[i]);
             }
             else
             {
-                UpdateWeapon(null);
+                UpdateWeaponProperties(null);
             }
         }
     }
 
-    private void UpdateWeapon(Equipment item)
+    private void UpdateWeaponProperties(Equipment item)
     {
         if (item != null)
         {
             // Weapon's properties
             baseDamage = item.baseDamage;
-            damagePercentReduction = item.damagePercentReduction;
             pushForce = item.pushForce;
             attackCooldown = item.attackCooldown;
 
+            // Sprites and Colliders
             spriteRenderer.sprite = item.sprite;
-            attackAnim = item.attackAnim;
+            boxCollider.size = item.sprite.bounds.size;
         }
         else
         {
             // Default values if no weapon
             baseDamage = 1;
-            damagePercentReduction = 0;
             pushForce = 0.3f;
             attackCooldown = 1;
 
-            spriteRenderer.sprite = null;
-            attackAnim = null;
+            // Sprites and Colliders
+            spriteRenderer.sprite = fist;
+            boxCollider.size = fist.bounds.size;
         }
     }
 
     protected override void OnCollide(Collider2D collider2D)
     {
-        if (collider2D.name == "Player") // temporary condition
-            return; // we ignore player
-
-        // Do damage
-        Damage dmg = new Damage
+        if (canDamage)
         {
-            origin = transform.position,
-            damage = baseDamage,
-            pushForce = this.pushForce
-        };
+            if (collider2D.name == "Player") // temporary condition
+                return; // we ignore player
 
-        collider2D.SendMessage("TakeDamage", dmg);
+            // Do damage
+            Damage dmg = new Damage
+            {
+                origin = transform.position,
+                damage = baseDamage,
+                pushForce = this.pushForce
+            };
+
+            collider2D.SendMessage("TakeDamage", dmg);
+        }
     }
 }

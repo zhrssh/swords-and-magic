@@ -17,8 +17,8 @@ MonoBehaviour:
   inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
   sprite: {fileID: 3946981405331717686, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
   isDefaultItem: 0
+  equipmentType: 0
   equipmentSlot: 0
-  baseDamage: 3
-  damagePercentReduction: 0
+  baseDamage: 22
   pushForce: 0.5
   attackCooldown: 1
