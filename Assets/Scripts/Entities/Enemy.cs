@@ -5,8 +5,9 @@ public class Enemy : Damageable
 {
     // AI Stats
     [SerializeField] float detectionRange = 0.3f;
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float attackDamage = 3.5f;
+    [SerializeField] float moveSpeed = 1f;
+    [SerializeField] float attackDamage = 10f;
+    [SerializeField] float attackRange = 0.1f;
     [SerializeField] float pushForce = 2f;
 
     // LayerMask
@@ -22,6 +23,24 @@ public class Enemy : Damageable
     protected override void Start()
     {
         base.Start();
+    }
+
+    private void Update()
+    {
+        if (currentTarget != null)
+        {
+           if ((currentTarget.transform.position - transform.position).magnitude < attackRange)
+           {
+               Damage dmg = new Damage
+               {
+                   origin = transform.position,
+                   damage = attackDamage,
+                   pushForce = this.pushForce
+               };
+
+               currentTarget.SendMessage("TakeDamage", dmg);
+           }
+        }
     }
 
     protected override void FixedUpdate()
@@ -42,8 +61,6 @@ public class Enemy : Damageable
         }
 
         ChaseTarget();
-
-        // Handle Push Direction
     }
 
     private void ChaseTarget()
