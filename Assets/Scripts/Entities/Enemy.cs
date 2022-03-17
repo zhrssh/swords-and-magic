@@ -23,6 +23,7 @@ public class Enemy : Damageable
     protected override void Start()
     {
         base.Start();
+        TargetingSystem.instance.AddEnemy(this);
     }
 
     private void Update()
@@ -72,5 +73,9 @@ public class Enemy : Damageable
         rb.velocity = moveDelta * moveSpeed;
     }
 
-    
+    protected override void HandleDeath()
+    {
+        TargetingSystem.instance.RemoveEnemy(this);
+        base.HandleDeath();
+    }
 }

@@ -27,10 +27,14 @@ public class PlayerMovement2D : MonoBehaviour
     {
         // Inputs and Movements
         MyInput();
-        Move();
 
         // Animation
         AnimateMovement();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
     }
 
     private void AnimateMovement()
