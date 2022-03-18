@@ -3,12 +3,8 @@ using UnityEngine;
 
 public class Enemy : Damageable
 {
-    // AI Stats
-    [SerializeField] float detectionRange = 0.3f;
-    [SerializeField] float moveSpeed = 1f;
-    [SerializeField] float attackDamage = 10f;
-    [SerializeField] float attackRange = 0.1f;
-    [SerializeField] float pushForce = 2f;
+    // Data Asset
+    [SerializeField] EnemyData enemyData;
 
     // LayerMask
     [SerializeField] LayerMask whatIsPlayer;
@@ -24,19 +20,23 @@ public class Enemy : Damageable
     {
         base.Start();
         TargetingSystem.instance.AddEnemy(this);
+
+        // overrides the current health and armor
+        health = enemyData.maxHealth;
+        armor = enemyData.maxArmor;
     }
 
     private void Update()
     {
         if (currentTarget != null)
         {
-           if ((currentTarget.transform.position - transform.position).magnitude < attackRange)
+           if ((currentTarget.transform.position - transform.position).magnitude < enemyData.attackRange)
            {
                Damage dmg = new Damage
                {
                    origin = transform.position,
-                   damage = attackDamage,
-                   pushForce = this.pushForce
+                   damage = enemyData.attackDamage,
+                   pushForce = enemyData.pushForce
                };
 
                currentTarget.SendMessage("TakeDamage", dmg);
@@ -47,7 +47,7 @@ public class Enemy : Damageable
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRange, whatIsPlayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, enemyData.detectionRange, whatIsPlayer);
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i] == null)
@@ -70,7 +70,7 @@ public class Enemy : Damageable
             return;
 
         moveDelta = (currentTarget.transform.position - transform.position).normalized;
-        rb.velocity = moveDelta * moveSpeed;
+        rb.velocity = moveDelta * enemyData.moveSpeed;
     }
 
     protected override void HandleDeath()

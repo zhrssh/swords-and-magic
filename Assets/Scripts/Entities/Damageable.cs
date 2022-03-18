@@ -5,13 +5,10 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     // Systems
-    [SerializeField] protected float maxHealth = 100.0f;
-    [SerializeField] protected float maxArmor = 100.0f;
-    [SerializeField] protected float pushRecoverySpeed = 0.2f;
-
-    // private fields
-    private float health;
-    private float armor;
+    protected float maxHealth = 100.0f;
+    protected float maxArmor = 100.0f;
+    protected float health;
+    protected float armor;
 
     // Immunity
     protected float immuneTime = 1.0f;

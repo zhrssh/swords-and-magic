@@ -17,6 +17,9 @@ public class PlayerMovement2D : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
 
+    // Targeting System
+    private Enemy currentTarget;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -28,8 +31,8 @@ public class PlayerMovement2D : MonoBehaviour
         // Inputs and Movements
         MyInput();
 
-        // Animation
-        AnimateMovement();
+        // Animate
+        
     }
 
     private void FixedUpdate()
@@ -53,7 +56,6 @@ public class PlayerMovement2D : MonoBehaviour
         // Movement
         movement.x = moveJoystick.Horizontal;
         movement.y = moveJoystick.Vertical;
-
         movement.Normalize();
 
         // checks if the player is moving
@@ -65,6 +67,8 @@ public class PlayerMovement2D : MonoBehaviour
         }
         else
             isMoving = false;
+
+        HandleOrientation();
     }
 
     private void Move()
@@ -73,5 +77,38 @@ public class PlayerMovement2D : MonoBehaviour
         {
             rb.velocity = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
         }
+    }
+
+    private void HandleOrientation()
+    {
+        // Flip the player on the y axis
+        if (currentTarget == null)
+        {
+            if (lastMovement.x < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+        else
+        {
+            if (transform.position.x < currentTarget.transform.position.x)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
+
+    }
+
+    public void SetTarget(Enemy enemy)
+    {
+        currentTarget = enemy;
     }
 }

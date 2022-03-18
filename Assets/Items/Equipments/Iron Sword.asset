@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Iron Sword
   description: This is your starter sword.
   inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
-  sprite: {fileID: -1468138165416736685, guid: a1533bf6654b75b4e97ebef90ead3852, type: 3}
+  sprite: {fileID: -6875014325259873426, guid: 779c6c60406570d42b55cc6c0eb761a7, type: 3}
   isDefaultItem: 0
   equipmentType: 0
   equipmentSlot: 0

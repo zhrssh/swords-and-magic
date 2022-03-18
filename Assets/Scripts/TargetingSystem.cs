@@ -66,15 +66,20 @@ public class TargetingSystem : MonoBehaviour
                     {
                         if ((player.transform.position - currentTarget.transform.position).sqrMagnitude > (player.transform.position - enemy.transform.position).sqrMagnitude)
                         {
+                            player.SetTarget(enemy);
                             currentTarget = enemy;
                         }
                     }
                     else
+                    {
+                        player.SetTarget(enemy);
                         currentTarget = enemy;
+                    }
                     break;
                 }
                 else
                 {
+                    player.SetTarget(null);
                     currentTarget = null;
                 }
             }
@@ -83,8 +88,15 @@ public class TargetingSystem : MonoBehaviour
 
     private void HandleCameraPos()
     {
+        // To avoid accessing null references
+        if (player == null)
+        {
+            Debug.LogWarning("Player reference is missing " + this.name);
+            return;
+        }
+
         // Making the camera focus on both player and the target
-        if (currentTarget != null && player != null)
+        if (currentTarget != null)
         {
             Vector3 targetPos = (currentTarget.transform.position + player.transform.position) / 2f;
             
