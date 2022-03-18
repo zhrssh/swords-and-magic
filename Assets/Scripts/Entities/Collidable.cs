@@ -11,6 +11,8 @@ public class Collidable : MonoBehaviour
     {
         hits = new List<Collider2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        transform.position = new Vector3 (transform.position.x, transform.position.y, 0); // to avoid forgetting to adjust the z value
     }
 
     protected virtual void Update()

@@ -14,7 +14,7 @@ public class TargetingSystem : MonoBehaviour
 
     #endregion
 
-    private static List<Enemy> enemies;
+    private List<Enemy> enemies;
     private Enemy currentTarget;
     
     // Player

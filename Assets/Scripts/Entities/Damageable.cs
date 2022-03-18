@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Damageable : MonoBehaviour
@@ -8,7 +7,9 @@ public class Damageable : MonoBehaviour
     protected float maxHealth = 100.0f;
     protected float maxArmor = 100.0f;
     protected float health;
+    public float GetHealth() { return health; }
     protected float armor;
+    public float GetArmor() { return armor; }
 
     // Immunity
     protected float immuneTime = 1.0f;
@@ -57,8 +58,8 @@ public class Damageable : MonoBehaviour
                     health = Mathf.Clamp(health, 0.0f, maxHealth);
                 }
 
-                // Push Force
-                pushDirection = (transform.position - dmg.origin).normalized * dmg.pushForce * 100f;
+                // Push Force is not yet implemented
+                pushDirection = (transform.position - dmg.origin).normalized * dmg.pushForce;
             }
         }
 
@@ -71,12 +72,7 @@ public class Damageable : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        // Handles push direction
-        if (pushDirection.magnitude > 0)
-        {
-            rb.AddForce(pushDirection, ForceMode2D.Impulse);
-            pushDirection = Vector2.zero;
-        }
+        // meant to be overriden
     }
 
     protected virtual void Heal(float healReceived)

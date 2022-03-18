@@ -9,15 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 976e3535bbd4e8545803aa56c609aa25, type: 3}
-  m_Name: Bat
+  m_Script: {fileID: 11500000, guid: c76e5c1e274ad624dbe4746ed66d6ee5, type: 3}
+  m_Name: Knight
   m_EditorClassIdentifier: 
-  enemyType: 1
-  maxHealth: 30
-  maxArmor: 0
-  detectionRange: 0.5
-  moveSpeed: 0.75
-  attackDamage: 6
-  attackRange: 0.125
-  pushForce: 2
-  attackCooldown: 0.75
+  playerClass: 0
+  maxHealth: 100
+  maxArmor: 100
+  moveSpeed: 1
+  attackRange: 0.15

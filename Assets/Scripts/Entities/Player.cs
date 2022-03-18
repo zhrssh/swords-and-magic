@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class Player : Damageable
 {
-    PlayerMovement2D playerMovement2D;
+    PlayerController playerController;
 
     protected override void Start()
     {
         base.Start();
-        playerMovement2D = GetComponent<PlayerMovement2D>();
+        playerController = GetComponent<PlayerController>();
     }
 
     public void SetTarget(Enemy enemy)
     {
-        playerMovement2D.SetTarget(enemy);
+        playerController.SetTarget(enemy);
     }
 }

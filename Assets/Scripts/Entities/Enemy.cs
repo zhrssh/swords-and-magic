@@ -11,10 +11,13 @@ public class Enemy : Damageable
 
     // Target
     Collider2D currentTarget;
+    private bool isInRange = false;
 
     // Vectors
     Vector2 moveDelta;
 
+    // Combat
+    float lastAttack;
 
     protected override void Start()
     {
@@ -30,16 +33,14 @@ public class Enemy : Damageable
     {
         if (currentTarget != null)
         {
-           if ((currentTarget.transform.position - transform.position).magnitude < enemyData.attackRange)
+           if ((currentTarget.transform.position - transform.position).sqrMagnitude < enemyData.attackRange * enemyData.attackRange)
            {
-               Damage dmg = new Damage
-               {
-                   origin = transform.position,
-                   damage = enemyData.attackDamage,
-                   pushForce = enemyData.pushForce
-               };
-
-               currentTarget.SendMessage("TakeDamage", dmg);
+                isInRange = true;
+                HandleAttack();
+           }
+           else
+           {
+               isInRange = false;
            }
         }
     }
@@ -69,8 +70,31 @@ public class Enemy : Damageable
         if (currentTarget == null)
             return;
 
-        moveDelta = (currentTarget.transform.position - transform.position).normalized;
-        rb.velocity = moveDelta * enemyData.moveSpeed;
+        if (!isInRange) // we only move to player when not in range
+        {
+            moveDelta = (currentTarget.transform.position - transform.position).normalized;
+            rb.velocity = moveDelta * enemyData.moveSpeed;
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    private void HandleAttack()
+    {
+        if (Time.time - lastAttack > enemyData.attackCooldown)
+        {
+            lastAttack = Time.time;
+            Damage dmg = new Damage
+            {
+                origin = transform.position,
+                damage = enemyData.attackDamage,
+                pushForce = enemyData.pushForce
+            };
+
+            currentTarget.SendMessage("TakeDamage", dmg);
+        }
     }
 
     protected override void HandleDeath()

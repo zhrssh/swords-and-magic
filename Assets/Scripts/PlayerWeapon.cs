@@ -66,7 +66,7 @@ public class PlayerWeapon : Collidable
         {
             // Default values if no weapon
             baseDamage = 1;
-            pushForce = 0.3f;
+            pushForce = 1;
             attackCooldown = 1;
 
             // Sprites and Colliders
@@ -89,7 +89,7 @@ public class PlayerWeapon : Collidable
                 damage = baseDamage,
                 pushForce = this.pushForce
             };
-
+            
             collider2D.SendMessage("TakeDamage", dmg);
         }
     }

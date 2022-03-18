@@ -48,7 +48,7 @@ TagManager:
   - name: Floor
     uniqueID: 1103683659
     locked: 0
-  - name: Other
+  - name: Enemy
     uniqueID: 3022268829
     locked: 0
   - name: Player
@@ -56,7 +56,4 @@ TagManager:
     locked: 0
   - name: Weapon
     uniqueID: 219089215
-    locked: 0
-  - name: Collision
-    uniqueID: 3937282211
     locked: 0

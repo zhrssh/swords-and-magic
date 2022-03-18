@@ -17,6 +17,7 @@ public class EnemyData : ScriptableObject
     public float attackDamage = 10f;
     public float attackRange = 0.1f;
     public float pushForce = 2f;
+    public float attackCooldown = 1f;
 }
 
 public enum EnemyType

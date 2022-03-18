@@ -12,7 +12,7 @@ public class PlayerData : ScriptableObject
 
 
     [Header("Combat")]
-    public float moveSpeed = 1f;
+    public float moveSpeed = 5f;
     public float attackRange = 0.1f;
 }
 
