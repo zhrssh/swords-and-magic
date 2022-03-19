@@ -69,7 +69,7 @@ public class WaveManager : MonoBehaviour
     private void Update()
     {
         // Check if player is dead
-        if (player.IsDead())
+        if (!gameHasEnded && player.IsDead())
             GameEnded();
 
         if (!gameHasEnded) // if player is not dead we continue

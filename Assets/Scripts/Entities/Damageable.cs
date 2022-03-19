@@ -115,7 +115,13 @@ public class Damageable : MonoBehaviour
         if (isDead)
         {
             Debug.Log("DEATH!");
-            Destroy(gameObject);
+            StartCoroutine(DestroyObject(gameObject));
         }
+    }
+
+    private IEnumerator DestroyObject(GameObject obj)
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(obj);
     }
 }
