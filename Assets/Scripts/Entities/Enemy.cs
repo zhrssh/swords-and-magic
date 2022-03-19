@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : Damageable
@@ -33,49 +33,54 @@ public class Enemy : Damageable
     {
         if (currentTarget != null)
         {
-           if ((currentTarget.transform.position - transform.position).sqrMagnitude < enemyData.attackRange * enemyData.attackRange)
-           {
-                isInRange = true;
-                HandleAttack();
-           }
-           else
-           {
-               isInRange = false;
-           }
+            // The player is in range, attack
+            if ((currentTarget.transform.position - transform.position).sqrMagnitude < enemyData.attackRange * enemyData.attackRange)
+            {
+                    isInRange = true;
+                    HandleAttack();
+            }
+
+            // The player is not in range, chase
+            else
+            {
+                isInRange = false;
+                StartCoroutine(ChaseTarget());
+            }
         }
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, enemyData.detectionRange, whatIsPlayer);
-        for (int i = 0; i < colliders.Length; i++)
+        if (currentTarget == null)
         {
-            if (colliders[i] == null)
-                return;
-
-            if (colliders[i].GetComponent<Player>() != null)
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, enemyData.detectionRange, whatIsPlayer);
+            for (int i = 0; i < colliders.Length; i++)
             {
-                currentTarget = colliders[i];
-                colliders[i] = null; // clean the array
-                break;
+                if (colliders[i] == null)
+                    return;
+
+                if (colliders[i].GetComponent<Player>() != null)
+                {
+                    currentTarget = colliders[i];
+                    colliders[i] = null; // clean the array
+                    StartCoroutine(ChaseTarget());
+                    break;
+                }
             }
         }
-
-        ChaseTarget();
     }
 
-    private void ChaseTarget()
+    private IEnumerator ChaseTarget()
     {
-        if (currentTarget == null)
-            return;
-
-        if (!isInRange) // we only move to player when not in range
+        while (currentTarget != null && !isInRange) // move to player when not in range
         {
             moveDelta = (currentTarget.transform.position - transform.position).normalized;
             rb.velocity = moveDelta * enemyData.moveSpeed;
+            yield return null;
         }
-        else
+
+        if (isInRange) // stop moving towards player when in range
         {
             rb.velocity = Vector2.zero;
         }

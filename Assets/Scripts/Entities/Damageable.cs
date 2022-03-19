@@ -17,6 +17,8 @@ public class Damageable : MonoBehaviour
 
     // Push Force
     protected Vector3 pushDirection;
+    private float pushRecoverySpeed = 0.2f;
+    private float lastPush;
 
     // References
     protected Rigidbody2D rb;
@@ -60,6 +62,7 @@ public class Damageable : MonoBehaviour
 
                 // Push Force is not yet implemented
                 pushDirection = (transform.position - dmg.origin).normalized * dmg.pushForce;
+                StartCoroutine(Knockback(pushDirection));
             }
         }
 
@@ -68,6 +71,20 @@ public class Damageable : MonoBehaviour
             isDead = true;
             HandleDeath();
         }
+    }
+
+    private IEnumerator Knockback(Vector3 pushDirection)
+    {
+        lastPush = 0;
+        while (lastPush < immuneTime)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.AddForce(pushDirection, ForceMode2D.Impulse);
+            lastPush += pushRecoverySpeed;
+            yield return null;
+        }
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     protected virtual void FixedUpdate()

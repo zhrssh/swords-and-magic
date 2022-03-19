@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyType: 1
   maxHealth: 30
   maxArmor: 0
-  detectionRange: 0.5
+  detectionRange: 10
   moveSpeed: 0.75
   attackDamage: 6
   attackRange: 0.125
