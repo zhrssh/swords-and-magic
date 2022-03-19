@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91117a9f3de4d714b92c6f9075adf571, type: 3}
-  m_Name: Iron Sword
+  m_Name: Iron Axe
   m_EditorClassIdentifier: 
-  name: Iron Sword
-  description: This is your starter sword.
+  name: Iron Axe
+  description: This is a heavy axe.
   inventoryIcon: {fileID: 21300000, guid: 2cafbaef7f917584792469417d5bb4a9, type: 3}
-  sprite: {fileID: -6875014325259873426, guid: 779c6c60406570d42b55cc6c0eb761a7, type: 3}
+  sprite: {fileID: 858369032657908291, guid: 779c6c60406570d42b55cc6c0eb761a7, type: 3}
   isDefaultItem: 0
   equipmentType: 0
   equipmentSlot: 0
-  baseDamage: 12
-  pushForce: 3
-  attackCooldown: 1
+  baseDamage: 18
+  pushForce: 2
+  attackCooldown: 1.75

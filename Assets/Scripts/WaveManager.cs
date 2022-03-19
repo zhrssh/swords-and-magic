@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
+    #region Singleton
+
+    public static WaveManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    #endregion
+
     public enum SpawnState
     {
         Counting,
@@ -34,9 +44,11 @@ public class WaveManager : MonoBehaviour
     public Boss[] bosses;
     private int nextWave = 0;
     private int waveNumber = 1;
+    public int GetWaveNumber() { return waveNumber; }
 
     public float timeBetweenWaves = 10f;
     private float waveCountdown;
+    public float GetWaveCountdown() { return waveCountdown; }
 
     private float spawnRadius = 5f;
 
@@ -75,6 +87,8 @@ public class WaveManager : MonoBehaviour
             {
                 waveCountdown -= Time.deltaTime;
             }
+
+            waveCountdown = Mathf.Clamp(waveCountdown, 0, timeBetweenWaves);
         }
     }
 
@@ -82,6 +96,7 @@ public class WaveManager : MonoBehaviour
     {
         Debug.Log("Wave: " + _wave.name);
         state = SpawnState.Spawning;
+        waveNumber++;
         nextWave = (nextWave + 1) % waves.GetLength(0);
 
         // Spawn number of enemies based on count
@@ -101,7 +116,6 @@ public class WaveManager : MonoBehaviour
         // Keep spawning waves and add difficulty multiplier
         state = SpawnState.Counting;
         waveCountdown = timeBetweenWaves;
-        waveNumber++;
 
         // Add multiplier in the wave
         AddMultiplier(_wave);
@@ -145,13 +159,14 @@ public class WaveManager : MonoBehaviour
         else
         {
             Debug.LogWarning("No Boss Set!");
+            yield break;
         }
     }
 
     private void GameEnded()
     {
         // Display Death Screen
-        Debug.Log("Display Death Screen.");
+        LevelManager.instance.DisplayDeathScreen();
         gameHasEnded = true;
     }
 }

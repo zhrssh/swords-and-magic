@@ -15,6 +15,16 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameObject deathScreen;
+    [SerializeField] private GameObject pauseScreen;
+
+    public static bool isGamePaused = false;
+
+    private void Start()
+    {
+        loadingScreen.SetActive(false);
+        deathScreen.SetActive(false);
+    }
 
     public void OnPlayButtonPressed()
     {
@@ -31,5 +41,55 @@ public class LevelManager : MonoBehaviour
         }
 
         loadingScreen.SetActive(false);
+    }
+
+    public void OnQuitButtonPressed()
+    {
+        Application.Quit();
+    }
+
+    public void OnMenuButtonPressed()
+    {
+        SceneManager.LoadScene("MenuLevel");
+    }
+
+    public void OnPauseButtonPressed()
+    {
+        if (!isGamePaused)
+        {
+            isGamePaused = true;
+            Pause();
+        }
+    }
+
+    public void OnResumeButtonPressed()
+    {
+        if (isGamePaused)
+        {
+            isGamePaused = false;
+            Resume();
+        }
+    }
+
+    private void Resume()
+    {
+        pauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    
+    private void Pause()
+    {
+        pauseScreen.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void DisplayDeathScreen()
+    {
+        deathScreen.SetActive(true);
+    }
+
+    public void HideDeathScreen()
+    {
+        deathScreen.SetActive(false);
     }
 }

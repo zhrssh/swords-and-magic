@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5172115569040770573
+--- !u!1 &3446521693874930195
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5172115569040770574}
-  - component: {fileID: 5172115569040770575}
+  - component: {fileID: 1075746446341139651}
+  - component: {fileID: 674379870984776841}
   m_Layer: 0
-  m_Name: WaveManager
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5172115569040770574
+--- !u!4 &1075746446341139651
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5172115569040770573}
+  m_GameObject: {fileID: 3446521693874930195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 388.07867, y: 247.70126, z: -72.64133}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5172115569040770575
+--- !u!114 &674379870984776841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5172115569040770573}
+  m_GameObject: {fileID: 3446521693874930195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dcc3155868a55248becd46c9e0c098b, type: 3}
+  m_Script: {fileID: 11500000, guid: bd806798d910bba4bbe0e6743f3b741a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - name: Bats
-    enemies:
-    - {fileID: 6793005763324196665, guid: 90c9f1f1cb554c546832762f59c321a6, type: 3}
-    count: 5
-    rate: 1
-  bosses: []
-  timeBetweenWaves: 15
-  player: {fileID: 0}
-  difficultyRate: 10
+  loadingScreen: {fileID: 0}
+  deathScreen: {fileID: 0}

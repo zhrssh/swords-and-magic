@@ -91,7 +91,6 @@ public class TargetingSystem : MonoBehaviour
         // To avoid accessing null references
         if (player == null)
         {
-            Debug.LogWarning("Player reference is missing " + this.name);
             return;
         }
 
