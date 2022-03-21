@@ -10,7 +10,7 @@ public class Item : ScriptableObject
     public Sprite sprite = null;
     public bool isDefaultItem = false;
 
-    public virtual void Use()
+    public virtual void Use(Player owner)
     {
         // method meant to be overwritten
     }

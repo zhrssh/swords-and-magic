@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
     }
 
     #endregion

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Damageable : MonoBehaviour
+public class Entity : MonoBehaviour
 {
     // Systems
     protected float maxHealth = 100.0f;
@@ -92,7 +92,7 @@ public class Damageable : MonoBehaviour
         // meant to be overriden
     }
 
-    protected virtual void Heal(float healReceived)
+    public virtual void Heal(float healReceived)
     {
         if (!isDead)
         {
@@ -101,7 +101,7 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    protected virtual void RegenArmor(float armorReceived)
+    public virtual void RegenArmor(float armorReceived)
     {
         if (!isDead)
         {
@@ -114,14 +114,7 @@ public class Damageable : MonoBehaviour
     {
         if (isDead)
         {
-            Debug.Log("DEATH!");
-            StartCoroutine(DestroyObject(gameObject));
+            gameObject.SetActive(false);
         }
-    }
-
-    private IEnumerator DestroyObject(GameObject obj)
-    {
-        yield return new WaitForSeconds(5f);
-        Destroy(obj);
     }
 }

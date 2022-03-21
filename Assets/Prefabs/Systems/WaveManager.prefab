@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5172115569040770574}
-  - component: {fileID: 5172115569040770575}
+  - component: {fileID: 7956492050594462533}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5172115569040770575
+--- !u!114 &7956492050594462533
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,11 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - name: Bats
-    enemies:
-    - {fileID: 6793005763324196665, guid: 90c9f1f1cb554c546832762f59c321a6, type: 3}
+    enemy: {fileID: 6793005763324196665, guid: 90c9f1f1cb554c546832762f59c321a6, type: 3}
     count: 5
     rate: 1
-  bosses: []
   timeBetweenWaves: 15
   player: {fileID: 0}
   difficultyRate: 10

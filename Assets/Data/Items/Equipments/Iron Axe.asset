@@ -20,5 +20,5 @@ MonoBehaviour:
   equipmentType: 0
   equipmentSlot: 0
   baseDamage: 18
-  pushForce: 2
+  pushForce: 1.2
   attackCooldown: 1.75

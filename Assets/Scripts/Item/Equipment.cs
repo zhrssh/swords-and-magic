@@ -12,10 +12,8 @@ public class Equipment : Item
     public float pushForce;
     public float attackCooldown;
 
-    public override void Use()
+    public override void Use(Player owner)
     {
-        base.Use();
-
         // Equip the item
         if (EquipmentManager.instance.Equip(this)) // we don't need to instantiate because we already instantiated it in the inventory
             RemoveItemFromInventory(); // Remove from inventory

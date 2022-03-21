@@ -10,6 +10,7 @@ public class TargetingSystem : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
     }
 
     #endregion
@@ -41,6 +42,13 @@ public class TargetingSystem : MonoBehaviour
 
     public void RemoveEnemy(Enemy enemy)
     {
+        if (currentTarget == enemy)
+        {
+            // remove the focus on the dead target
+            player.SetTarget(null);
+            currentTarget = null; 
+        }
+
         enemies.Remove(enemy);
     }
 

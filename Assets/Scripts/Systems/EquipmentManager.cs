@@ -9,6 +9,7 @@ public class EquipmentManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
     }
 
     #endregion

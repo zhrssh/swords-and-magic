@@ -11,6 +11,9 @@ public class Inventory : MonoBehaviour
     public delegate void OnItemChanged();
     public OnItemChanged onItemChangedCallback;
 
+    // Inventory owner for references
+    Player player;
+
     private void Awake()
     {
         if (instance != null)
@@ -20,6 +23,17 @@ public class Inventory : MonoBehaviour
         }
 
         instance = this;
+    }
+
+    private void Start()
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag("Player");
+        player = obj.GetComponent<Player>();
+    }
+
+    public Player GetOwner()
+    {
+        return player;
     }
 
     public bool Add(Item item)

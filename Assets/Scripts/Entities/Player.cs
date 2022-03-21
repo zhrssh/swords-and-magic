@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : Damageable
+public class Player : Entity
 {
     PlayerController playerController;
 

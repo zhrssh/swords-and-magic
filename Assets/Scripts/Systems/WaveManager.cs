@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
     }
 
     #endregion
@@ -24,16 +25,7 @@ public class WaveManager : MonoBehaviour
     public class Wave
     {
         public string name;
-        public List<GameObject> enemies;
-        public int count;
-        public float rate;
-    }
-
-    [System.Serializable]
-    public class Boss
-    {
-        public string name;
-        public GameObject boss;
+        public GameObject enemy;
         public int count;
         public float rate;
     }
@@ -41,12 +33,12 @@ public class WaveManager : MonoBehaviour
     private SpawnState state = SpawnState.Counting;
 
     public Wave[] waves;
-    public Boss[] bosses;
+
     private int nextWave = 0;
     private int waveNumber = 1;
     public int GetWaveNumber() { return waveNumber; }
 
-    public float timeBetweenWaves = 10f;
+    public float timeBetweenWaves = 20f;
     private float waveCountdown;
     public float GetWaveCountdown() { return waveCountdown; }
 
@@ -60,8 +52,15 @@ public class WaveManager : MonoBehaviour
     private float difficultyMultiplier = 1f;
     [SerializeField] private float difficultyRate = 10f; // the lower the number, the higher the exponential rate
 
+    // Object Pooling
+    ObjectPooling objectPooling;
+    Dictionary<string, Queue<GameObject>> pool;
+
     private void Start()
     {
+        objectPooling = ObjectPooling.instance;
+        pool = objectPooling.GetDictionary();
+
         waveCountdown = timeBetweenWaves;
         gameHasEnded = false;
     }
@@ -74,13 +73,14 @@ public class WaveManager : MonoBehaviour
 
         if (!gameHasEnded) // if player is not dead we continue
         {
-            difficultyMultiplier += Time.deltaTime; // measures how long the player has survived
+            difficultyMultiplier += Time.deltaTime / difficultyRate; // measures how long the player has survived
             if (waveCountdown <= 0)
             {
                 if (state != SpawnState.Spawning)
                 {
                     // Start spawning waves
-                    StartCoroutine(SpawnWave(waves[nextWave]));
+                    nextWave = 0;
+                    StartCoroutine("SpawnWave", waves[nextWave]);
                 }
             }
             else
@@ -97,20 +97,16 @@ public class WaveManager : MonoBehaviour
         Debug.Log("Wave: " + _wave.name);
         state = SpawnState.Spawning;
         waveNumber++;
-        nextWave = (nextWave + 1) % waves.GetLength(0);
+
+        // Sets the next wave
+        nextWave = (nextWave + 1) % waves.Length;
 
         // Spawn number of enemies based on count
         for (int i = 0; i < _wave.count; i++)
         {
             // Spawn enemies inside the list of enemies that can spawn in each wave
-            SpawnEnemy(_wave.enemies);
+            StartCoroutine(SpawnEnemy(_wave.name));
             yield return new WaitForSeconds(1f / _wave.rate);
-        }
-
-        // Spawn Boss every 7th wave
-        if (waveNumber % 7 == 0)
-        {
-            StartCoroutine(SpawnBoss());
         }
 
         // Keep spawning waves and add difficulty multiplier
@@ -125,42 +121,28 @@ public class WaveManager : MonoBehaviour
 
     private void AddMultiplier(Wave _wave)
     {
-        _wave.count += Mathf.RoundToInt(difficultyMultiplier / difficultyRate);
+        _wave.count += Mathf.RoundToInt(difficultyMultiplier);
     }
 
-    private void AddBossMultiplier(Boss _boss)
+    private IEnumerator SpawnEnemy(string _wave)
     {
-        _boss.count += Mathf.RoundToInt(difficultyMultiplier / (difficultyRate * 2));
-    }
+        // To avoid null reference
+        if (pool == null)
+            pool = ObjectPooling.instance.GetDictionary();
 
-    private void SpawnEnemy(List<GameObject> enemies)
-    {
-        // Spawn enemiesaround the player
-        Instantiate(enemies[Random.Range(0, enemies.Count)], player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
-    }
+        // Gets the object from the dictionary and spawns it around the player
+        GameObject obj = pool[_wave].Dequeue();
+        Enemy enemy;
 
-    private IEnumerator SpawnBoss()
-    {
-        // choose which boss to spawn
-        Boss _boss = bosses[Random.Range(0, bosses.Length)];
-        
-        if (_boss != null)
+        yield return new WaitForSeconds(.1f);
+
+        if (obj.TryGetComponent<Enemy>(out enemy))
         {
-            for (int i = 0; i < _boss.count; i++)
-            {
-                // Spawn the boss
-                Instantiate(_boss.boss, player.transform.position + new Vector3(Random.Range(-spawnRadius, spawnRadius), Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
-                yield return new WaitForSeconds(1f / _boss.rate);
-            }
+            Vector3 randPos = new Vector3(player.transform.position.x + Random.Range(-spawnRadius, spawnRadius), player.transform.position.y + Random.Range(-spawnRadius, spawnRadius));
+            enemy.OnObjectSpawned(randPos, Quaternion.identity);
+        }
 
-            // Add multiplier
-            AddBossMultiplier(_boss);
-        }
-        else
-        {
-            Debug.LogWarning("No Boss Set!");
-            yield break;
-        }
+        pool[_wave].Enqueue(obj);
     }
 
     private void GameEnded()

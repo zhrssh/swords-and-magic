@@ -87,7 +87,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (item != null)
         {
-            item.Use(); // we use the item
+            item.Use(Inventory.instance.GetOwner()); // we use the item
         }
 
         // We update the display
