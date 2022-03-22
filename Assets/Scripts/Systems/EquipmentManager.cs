@@ -3,15 +3,18 @@ using UnityEngine;
 public class EquipmentManager : MonoBehaviour
 {
     #region Singleton
-
-    public static EquipmentManager instance;
-
-    private void Awake()
+    private static EquipmentManager _instance;
+    public static EquipmentManager instance
     {
-        instance = this;
-        DontDestroyOnLoad(instance);
-    }
+        get {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<EquipmentManager>();
+            }
 
+            return _instance;
+        }
+    }
     #endregion
 
     public delegate void OnEquipmentChange(Equipment newItem, Equipment oldItem);

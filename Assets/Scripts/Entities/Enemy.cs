@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : Entity, IObjectPooled
+public class Enemy : Entity
 {
     // Data Asset
     [SerializeField] EnemyData enemyData;
@@ -39,12 +39,8 @@ public class Enemy : Entity, IObjectPooled
         armor = enemyData.maxArmor;
     }
 
-    public void OnObjectSpawned(Vector3 position, Quaternion rotation)
+    public override void OnObjectReuse()
     {
-        gameObject.SetActive(true);
-        transform.position = position;
-        transform.localRotation = rotation;
-
         // fixes enemy not chasing after being recycled
         state = EnemyState.Idle;
 
@@ -55,7 +51,6 @@ public class Enemy : Entity, IObjectPooled
             rb.velocity = Vector3.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
-
 
         // overrides the current health and armor
         health = enemyData.maxHealth;

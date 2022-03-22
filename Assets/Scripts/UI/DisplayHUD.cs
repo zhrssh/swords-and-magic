@@ -11,15 +11,6 @@ public class DisplayHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI time;
     [SerializeField] private Player player;
 
-
-    // Manager References
-    WaveManager waveManager;
-
-    private void Start()
-    {
-        waveManager = WaveManager.instance;
-    }
-
     private void Update()
     {
         if (player != null)
@@ -28,10 +19,10 @@ public class DisplayHUD : MonoBehaviour
             armor.text = player.GetArmor().ToString();
         }
 
-        if (waveManager != null)
+        if (WaveManager.instance != null)
         {
-            wave.text = (waveManager.GetWaveNumber() - 1).ToString();
-            time.text = (Mathf.FloorToInt(waveManager.GetWaveCountdown()).ToString());
+            time.text = (WaveManager.instance.waveCountdown <= 0) ? "0" : Mathf.FloorToInt(WaveManager.instance.waveCountdown).ToString();
+            wave.text = WaveManager.instance.waveSurvived.ToString();
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public class Entity : PoolObject
 {
     // Systems
     protected float maxHealth = 100.0f;

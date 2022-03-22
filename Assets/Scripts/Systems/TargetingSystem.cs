@@ -5,12 +5,17 @@ public class TargetingSystem : MonoBehaviour
 {
     #region SINGLETON
 
-    public static TargetingSystem instance;
-
-    private void Awake()
+    private static TargetingSystem _instance;
+    public static TargetingSystem instance
     {
-        instance = this;
-        DontDestroyOnLoad(instance);
+        get {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<TargetingSystem>();
+            }
+
+            return _instance;
+        }
     }
 
     #endregion

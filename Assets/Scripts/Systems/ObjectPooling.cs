@@ -5,53 +5,88 @@ using UnityEngine;
 public class ObjectPooling : MonoBehaviour
 {
     #region Singleton
+    private static ObjectPooling _instance;
+    public static ObjectPooling instance {
+        get {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<ObjectPooling>();
+            }
 
-    public static ObjectPooling instance;
-    private void Awake()
-    {
-        instance = this;
-        DontDestroyOnLoad(instance);
+            return _instance;
+        }
     }
-
     #endregion
 
     // Object Pooling
-    private Dictionary<string, Queue<GameObject>> pool;
-    [SerializeField] int size;
+    private Dictionary<int, Queue<ObjectInstance>> poolDictionary = new Dictionary<int, Queue<ObjectInstance>>();
 
-    // Wave Manager
-    private WaveManager waveManager;
-
-    private void Start()
+    public void CreatePool(GameObject prefab, int size = 255)
     {
-        waveManager = WaveManager.instance;
-        pool = new Dictionary<string, Queue<GameObject>>();
-        
-        // Handles the enqueuing of the enemies in the queue and adding in the pool dictionary
-        for (int i = 0; i < waveManager.waves.Length; i++)
+        int key = prefab.GetInstanceID();
+
+        if (!poolDictionary.ContainsKey(key))
         {
-            WaveManager.Wave currentWave = waveManager.waves[i];
-
-            // Add each wave name to the dictionary and initialize with a new queue
-            Queue<GameObject> q = new Queue<GameObject>();
-            for (int j = 0; j < size; j++)
+            GameObject poolHolder = new GameObject(prefab.name + " pool");
+            poolHolder.transform.parent = transform;
+            
+            poolDictionary.Add(key, new Queue<ObjectInstance>());
+            for (int i = 0; i < size; i++)
             {
-                // Instantiates the objects inside the wave and add it to the queue
-                if (currentWave.enemy != null)
-                {
-                    GameObject obj = Instantiate(currentWave.enemy);
-                    obj.SetActive(false);
-                    obj.transform.parent = gameObject.transform;
-                    q.Enqueue(obj);
-                }
+                ObjectInstance obj = new ObjectInstance(Instantiate(prefab) as GameObject); 
+                poolDictionary[key].Enqueue(obj);
+                obj.SetParent(poolHolder.transform);
             }
-
-            pool.Add(currentWave.name, q);
         }
     }
 
-    public Dictionary<string, Queue<GameObject>> GetDictionary()
+    public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
-        return pool;
+        int key = prefab.GetInstanceID();
+
+        if (poolDictionary.ContainsKey(key))
+        {
+            ObjectInstance objToReuse = poolDictionary[key].Dequeue();
+            poolDictionary[key].Enqueue(objToReuse);
+            objToReuse.Reuse(position, rotation);
+        }
+    }
+
+    public class ObjectInstance
+    {
+        GameObject gameObject;
+        Transform transform;
+
+        bool hasPoolObjComponent;
+        PoolObject poolObjectScript;
+
+        public ObjectInstance(GameObject objectInstance)
+        {
+            gameObject = objectInstance;
+            transform = gameObject.transform;
+            gameObject.SetActive(false);
+
+            if (gameObject.GetComponent<PoolObject>())
+            {
+                hasPoolObjComponent = true;
+                poolObjectScript = gameObject.GetComponent<PoolObject>();
+            }
+        }
+
+        public void Reuse(Vector3 position, Quaternion rotation)
+        {
+            if (hasPoolObjComponent)
+                poolObjectScript.OnObjectReuse();
+
+
+            gameObject.SetActive(true);
+            transform.position = position;
+            transform.rotation = rotation;
+        }
+
+        public void SetParent(Transform parent)
+        {
+            transform.parent = parent;
+        }
     }
 }

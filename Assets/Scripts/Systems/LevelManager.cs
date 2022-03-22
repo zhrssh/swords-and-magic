@@ -6,11 +6,17 @@ public class LevelManager : MonoBehaviour
 {
     #region Singleton
 
-    public static LevelManager instance;
-    private void Awake()
+    private static LevelManager _instance;
+    public static LevelManager instance
     {
-        instance = this;
-        DontDestroyOnLoad(instance);
+        get {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<LevelManager>();
+            }
+
+            return _instance;
+        }
     }
 
     #endregion

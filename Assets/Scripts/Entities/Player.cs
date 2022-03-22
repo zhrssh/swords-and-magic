@@ -14,4 +14,10 @@ public class Player : Entity
     {
         playerController.SetTarget(enemy);
     }
+
+    protected override void HandleDeath()
+    {
+        base.HandleDeath();
+        LevelManager.instance.DisplayDeathScreen();
+    }
 }
